@@ -22,6 +22,8 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          light: "hsl(var(--primary-light))",
+          dark: "hsl(var(--primary-dark))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -47,6 +49,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Ayurvedic Theme Colors
+        healing: "hsl(var(--healing))",
+        nature: "hsl(var(--nature))",
+        earth: "hsl(var(--earth))",
+        wisdom: "hsl(var(--wisdom))",
+        calm: "hsl(var(--calm))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -80,10 +88,42 @@ export default {
             height: "0",
           },
         },
+        "fade-in": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(10px)"
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)"
+          }
+        },
+        "gentle-pulse": {
+          "0%, 100%": {
+            transform: "scale(1)",
+            opacity: "1"
+          },
+          "50%": {
+            transform: "scale(1.02)",
+            opacity: "0.9"
+          }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 0.4s ease-out",
+        "gentle-pulse": "gentle-pulse 2s ease-in-out infinite",
+      },
+      backgroundImage: {
+        "gradient-healing": "var(--gradient-healing)",
+        "gradient-earth": "var(--gradient-earth)",
+        "gradient-wisdom": "var(--gradient-wisdom)",
+      },
+      boxShadow: {
+        "soft": "var(--shadow-soft)",
+        "healing": "var(--shadow-healing)",
+        "card": "var(--shadow-card)",
       },
     },
   },
