@@ -50,7 +50,7 @@ const Landing = () => {
                 size="lg"
                 className="w-full sm:w-auto"
               >
-                <Link to="/patient-profile">
+                <Link to="/auth">
                   Start New Patient Profile
                 </Link>
               </Button>
