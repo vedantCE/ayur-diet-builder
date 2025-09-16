@@ -99,7 +99,7 @@ const Reports = () => {
                 Secure PDF Generation
               </h3>
               <p className="text-muted-foreground">
-                Reports are generated securely using S3 storage with presigned access URLs. 
+                Reports are generated securely with encrypted storage and access-controlled URLs. 
                 All documents are encrypted and access-controlled.
               </p>
             </div>

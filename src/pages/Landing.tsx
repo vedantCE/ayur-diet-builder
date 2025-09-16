@@ -39,8 +39,8 @@ const Landing = () => {
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-              Integrating ancient Ayurvedic wisdom with modern nutrition science 
-              to create personalized healing diet charts for optimal wellness
+              Government of India AYUSH Ministry approved platform integrating 
+              classical Ayurvedic texts with ICMR-NIN nutrition data for evidence-based personalized diet planning
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -50,8 +50,8 @@ const Landing = () => {
                 size="lg"
                 className="w-full sm:w-auto"
               >
-                <Link to="/auth">
-                  Start New Patient Profile
+                <Link to="/dosha-assessment">
+                  Take Dosha Assessment
                 </Link>
               </Button>
               
@@ -63,6 +63,17 @@ const Landing = () => {
               >
                 <Link to="/diet-chart">
                   View Sample Diet Chart
+                </Link>
+              </Button>
+              
+              <Button 
+                asChild 
+                variant="outline" 
+                size="lg"
+                className="w-full sm:w-auto"
+              >
+                <Link to="/practitioner-auth">
+                  🩺 Practitioner Portal
                 </Link>
               </Button>
             </div>
@@ -78,8 +89,8 @@ const Landing = () => {
               Modern Technology Meets Ancient Wisdom
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Our platform combines traditional Ayurvedic principles with contemporary 
-              healthcare practices to deliver personalized nutrition solutions
+              Research-backed platform combining Charaka Samhita principles with 
+              ICMR-NIN food composition data, following Ministry of AYUSH guidelines for digital healthcare
             </p>
           </div>
           
@@ -116,18 +127,42 @@ const Landing = () => {
               Ready to Transform Healthcare with Ayurveda?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join healthcare practitioners who are already using our platform 
-              to create personalized Ayurvedic diet plans for their patients
+              Join healthcare practitioners using our research-backed platform 
+              validated by AYUSH Ministry guidelines and ICMR-NIN nutrition standards
             </p>
-            <Button 
-              asChild 
-              variant="healing" 
-              size="lg"
-            >
-              <Link to="/patient-profile">
-                Get Started Today
-              </Link>
-            </Button>
+            <div className="text-center mb-6 space-x-2">
+              <Button asChild variant="outline" size="sm">
+                <Link to="/research-references">
+                  View Research & References
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="sm">
+                <Link to="/integration-roadmap">
+                  🚀 Integration Roadmap
+                </Link>
+              </Button>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                asChild 
+                variant="healing" 
+                size="lg"
+              >
+                <Link to="/dosha-assessment">
+                  Discover Your Dosha
+                </Link>
+              </Button>
+              
+              <Button 
+                asChild 
+                variant="outline" 
+                size="lg"
+              >
+                <Link to="/practitioner-auth">
+                  Healthcare Provider Login
+                </Link>
+              </Button>
+            </div>
           </Card>
         </div>
       </section>

@@ -8,13 +8,20 @@ import Layout from "./components/Layout";
 import Landing from "./pages/Landing";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import DoshaAssessment from "./pages/DoshaAssessment";
 import PatientProfile from "./pages/PatientProfile";
 import FoodSelection from "./pages/FoodSelection";
 import DietChart from "./pages/DietChart";
 import Reports from "./pages/Reports";
-import Education from "./pages/Education";
-import Mobile from "./pages/Mobile";
-import Integrations from "./pages/Integrations";
+import PractitionerAuth from "./pages/PractitionerAuth";
+import PractitionerDashboard from "./pages/PractitionerDashboard";
+import PatientManagement from "./pages/PatientManagement";
+import Consultations from "./pages/Consultations";
+import ResearchReferences from "./pages/ResearchReferences";
+import RecipeAnalyzer from "./pages/RecipeAnalyzer";
+import IntegrationRoadmap from "./pages/IntegrationRoadmap";
+
+
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,13 +38,21 @@ const App = () => (
               <Route path="/" element={<Landing />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dosha-assessment" element={<DoshaAssessment />} />
               <Route path="/patient-profile" element={<PatientProfile />} />
               <Route path="/food-selection" element={<FoodSelection />} />
               <Route path="/diet-chart" element={<DietChart />} />
               <Route path="/reports" element={<Reports />} />
-              <Route path="/education" element={<Education />} />
-              <Route path="/mobile" element={<Mobile />} />
-              <Route path="/integrations" element={<Integrations />} />
+              <Route path="/practitioner-auth" element={<PractitionerAuth />} />
+              <Route path="/practitioner-dashboard" element={<PractitionerDashboard />} />
+              <Route path="/patient-management" element={<PatientManagement />} />
+              <Route path="/consultations" element={<Consultations />} />
+              <Route path="/research-references" element={<ResearchReferences />} />
+              <Route path="/recipe-analyzer" element={<RecipeAnalyzer />} />
+              <Route path="/integration-roadmap" element={<IntegrationRoadmap />} />
+
+            
+
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

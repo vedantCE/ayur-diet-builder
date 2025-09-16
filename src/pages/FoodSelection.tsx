@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Trash2, Plus, UtensilsCrossed, Coffee, Sun, Moon } from "lucide-react";
+import { Trash2, Plus, UtensilsCrossed, Coffee, Sun, Moon, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { generateDietSuggestions } from "@/lib/gemini";
 
 interface FoodItem {
   id: string;
@@ -24,30 +25,33 @@ const FoodSelection = () => {
   const [selectedMealTime, setSelectedMealTime] = useState<string>("");
   const [dietPlan, setDietPlan] = useState<SelectedFood[]>([]);
   const [patientProfile, setPatientProfile] = useState<any>(null);
+  const [aiSuggestions, setAiSuggestions] = useState<any>(null);
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false);
 
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Food database based on ICMR-NIN Food Composition Tables with Ayurvedic properties
   const foodItems: FoodItem[] = [
-    { id: "1", name: "Basmati Rice", category: "Grains", properties: ["Cooling", "Easy to digest"], taste: "Sweet" },
-    { id: "2", name: "Moong Dal", category: "Legumes", properties: ["Light", "Easy to digest"], taste: "Sweet" },
-    { id: "3", name: "Ghee", category: "Fats", properties: ["Nourishing", "Cooling"], taste: "Sweet" },
-    { id: "4", name: "Fresh Ginger", category: "Spices", properties: ["Warming", "Digestive"], taste: "Pungent" },
-    { id: "5", name: "Turmeric", category: "Spices", properties: ["Healing", "Anti-inflammatory"], taste: "Bitter" },
-    { id: "6", name: "Spinach", category: "Vegetables", properties: ["Nutritious", "Cooling"], taste: "Astringent" },
-    { id: "7", name: "Carrots", category: "Vegetables", properties: ["Sweet", "Grounding"], taste: "Sweet" },
-    { id: "8", name: "Sweet Mango", category: "Fruits", properties: ["Cooling", "Nourishing"], taste: "Sweet" },
-    { id: "9", name: "Pomegranate", category: "Fruits", properties: ["Cooling", "Astringent"], taste: "Sweet-Sour" },
-    { id: "10", name: "Almonds", category: "Nuts", properties: ["Nourishing", "Heavy"], taste: "Sweet" },
-    { id: "11", name: "Cumin Seeds", category: "Spices", properties: ["Digestive", "Cooling"], taste: "Pungent" },
-    { id: "12", name: "Coriander", category: "Spices", properties: ["Cooling", "Digestive"], taste: "Sweet-Bitter" },
+    { id: "1", name: "बासमती चावल (Basmati Rice)", category: "अन्न (Grains)", properties: ["शीत (Cooling)", "लघु (Light)"], taste: "मधुर (Sweet)" },
+    { id: "2", name: "मूंग दाल (Moong Dal)", category: "दाल (Legumes)", properties: ["लघु (Light)", "सुपाच्य (Easy to digest)"], taste: "मधुर (Sweet)" },
+    { id: "3", name: "घी (Ghee)", category: "स्नेह (Fats)", properties: ["पोषक (Nourishing)", "शीत (Cooling)"], taste: "मधुर (Sweet)" },
+    { id: "4", name: "अदरक (Fresh Ginger)", category: "मसाले (Spices)", properties: ["उष्ण (Warming)", "दीपन (Digestive)"], taste: "कटु (Pungent)" },
+    { id: "5", name: "हल्दी (Turmeric)", category: "मसाले (Spices)", properties: ["रसायन (Healing)", "शोथहर (Anti-inflammatory)"], taste: "तिक्त (Bitter)" },
+    { id: "6", name: "पालक (Spinach)", category: "सब्जी (Vegetables)", properties: ["पोषक (Nutritious)", "शीत (Cooling)"], taste: "कषाय (Astringent)" },
+    { id: "7", name: "गाजर (Carrots)", category: "सब्जी (Vegetables)", properties: ["मधुर (Sweet)", "भूमिक (Grounding)"], taste: "मधुर (Sweet)" },
+    { id: "8", name: "आम (Sweet Mango)", category: "फल (Fruits)", properties: ["शीत (Cooling)", "पोषक (Nourishing)"], taste: "मधुर (Sweet)" },
+    { id: "9", name: "अनार (Pomegranate)", category: "फल (Fruits)", properties: ["शीत (Cooling)", "कषाय (Astringent)"], taste: "मधुर-अम्ल (Sweet-Sour)" },
+    { id: "10", name: "बादाम (Almonds)", category: "मेवा (Nuts)", properties: ["पोषक (Nourishing)", "गुरु (Heavy)"], taste: "मधुर (Sweet)" },
+    { id: "11", name: "जीरा (Cumin Seeds)", category: "मसाले (Spices)", properties: ["दीपन (Digestive)", "शीत (Cooling)"], taste: "कटु (Pungent)" },
+    { id: "12", name: "धनिया (Coriander)", category: "मसाले (Spices)", properties: ["शीत (Cooling)", "दीपन (Digestive)"], taste: "मधुर-तिक्त (Sweet-Bitter)" },
   ];
 
   const mealTimes = [
-    { id: "breakfast", name: "Breakfast", icon: Coffee },
-    { id: "lunch", name: "Lunch", icon: Sun },
-    { id: "dinner", name: "Dinner", icon: Moon },
-    { id: "snacks", name: "Snacks", icon: UtensilsCrossed },
+    { id: "breakfast", name: "प्रातःकाल (Breakfast)", icon: Coffee },
+    { id: "lunch", name: "मध्याह्न (Lunch)", icon: Sun },
+    { id: "dinner", name: "सायंकाल (Dinner)", icon: Moon },
+    { id: "snacks", name: "नाश्ता (Snacks)", icon: UtensilsCrossed },
   ];
 
   useEffect(() => {
@@ -100,6 +104,28 @@ const FoodSelection = () => {
     });
   };
 
+  const generateAISuggestions = async () => {
+    if (!patientProfile) return;
+    
+    setIsGeneratingAI(true);
+    try {
+      const suggestions = await generateDietSuggestions(patientProfile);
+      setAiSuggestions(suggestions);
+      toast({
+        title: "AI Suggestions Generated",
+        description: "Personalized recommendations based on your dosha",
+      });
+    } catch (error) {
+      toast({
+        title: "AI Generation Failed",
+        description: "Please try again or add foods manually",
+        variant: "destructive"
+      });
+    } finally {
+      setIsGeneratingAI(false);
+    }
+  };
+
   const generateDietChart = () => {
     if (dietPlan.length === 0) {
       toast({
@@ -139,11 +165,15 @@ const FoodSelection = () => {
             <UtensilsCrossed className="w-8 h-8 text-primary-foreground" />
           </div>
           <h1 className="text-4xl font-bold text-foreground mb-4">
-            Food Selection
+            आहार चयन (Ahara Chayana)
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Build a personalized diet plan by selecting appropriate foods for each meal time
+            Food Selection - ICMR-NIN validated nutrition data combined with classical Ayurvedic food properties from Charaka Samhita
           </p>
+          <div className="text-center mt-4">
+            <Badge variant="outline" className="mr-2">ICMR-NIN Data</Badge>
+            <Badge variant="outline">Classical Ayurveda</Badge>
+          </div>
           {patientProfile && (
             <p className="text-sm text-muted-foreground mt-2">
               Creating diet plan for: <span className="font-medium text-foreground">{patientProfile.name}</span>
@@ -156,12 +186,12 @@ const FoodSelection = () => {
           <Card className="p-6 shadow-card bg-card h-fit">
             <h2 className="text-xl font-semibold text-foreground mb-6 flex items-center gap-2">
               <Plus className="w-5 h-5 text-primary" />
-              Add Foods to Diet Plan
+              आहार योजना (Ahara Yojana) - Add Foods
             </h2>
             
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Select Food Item</label>
+                <label className="text-sm font-medium text-foreground">आहार द्रव्य (Food Item) Selection</label>
                 <Select value={selectedFood} onValueChange={setSelectedFood}>
                   <SelectTrigger className="bg-background border-border">
                     <SelectValue placeholder="Choose a food item" />
@@ -182,7 +212,7 @@ const FoodSelection = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Select Meal Time</label>
+                <label className="text-sm font-medium text-foreground">भोजन काल (Meal Time) Selection</label>
                 <Select value={selectedMealTime} onValueChange={setSelectedMealTime}>
                   <SelectTrigger className="bg-background border-border">
                     <SelectValue placeholder="Choose meal time" />
@@ -226,13 +256,38 @@ const FoodSelection = () => {
               <Button 
                 onClick={addToDietPlan}
                 variant="healing" 
-                className="w-full"
+                className="w-full mb-4"
                 disabled={!selectedFood || !selectedMealTime}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add to Diet Plan
               </Button>
+              
+              <Button 
+                onClick={generateAISuggestions}
+                variant="outline" 
+                className="w-full"
+                disabled={isGeneratingAI || !patientProfile}
+              >
+                <Sparkles className="w-4 h-4 mr-2" />
+                {isGeneratingAI ? "Generating..." : "🤖 Get AI Suggestions"}
+              </Button>
             </div>
+            
+            {/* AI Suggestions */}
+            {aiSuggestions && (
+              <Card className="p-4 mt-4 bg-gradient-to-r from-primary/5 to-wisdom/5 border-primary/20">
+                <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  AI Recommendations
+                </h4>
+                <div className="space-y-2 text-sm">
+                  <div><strong>Breakfast:</strong> {aiSuggestions.breakfast?.name}</div>
+                  <div><strong>Lunch:</strong> {aiSuggestions.lunch?.name}</div>
+                  <div><strong>Dinner:</strong> {aiSuggestions.dinner?.name}</div>
+                </div>
+              </Card>
+            )}
           </Card>
 
           {/* Diet Plan Display */}

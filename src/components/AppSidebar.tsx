@@ -5,13 +5,13 @@ import {
   Users,
   Utensils,
   FileText,
-  GraduationCap,
+
   User,
   Heart,
   Settings,
   LogOut,
   Smartphone,
-  Building2
+
 } from "lucide-react";
 import {
   Sidebar,
@@ -42,19 +42,16 @@ export function AppSidebar() {
     { title: "Patients", url: "/patient-profile", icon: Users },
     { title: "Diet Builder", url: "/food-selection", icon: Utensils },
     { title: "Reports", url: "/reports", icon: FileText },
-    { title: "Education", url: "/education", icon: GraduationCap },
   ];
 
   const patientItems = [
     { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
     { title: "My Profile", url: "/patient-profile", icon: User },
     { title: "My Diet Chart", url: "/diet-chart", icon: Heart },
-    { title: "Education", url: "/education", icon: GraduationCap },
   ];
 
   const generalItems = [
     { title: "Mobile Preview", url: "/mobile", icon: Smartphone },
-    { title: "Integrations", url: "/integrations", icon: Building2 },
   ];
 
   const menuItems = user?.role === 'practitioner' ? practitionerItems : patientItems;
@@ -95,7 +92,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Tools & Integration</SidebarGroupLabel>
+          <SidebarGroupLabel>Tools</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {generalItems.map((item) => (

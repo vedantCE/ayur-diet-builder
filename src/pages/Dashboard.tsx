@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
+import SecurityCompliance from "@/components/SecurityCompliance";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -283,6 +284,11 @@ const Dashboard = () => {
           </Card>
         </div>
 
+        {/* Security & Compliance */}
+        <div className="mb-8">
+          <SecurityCompliance />
+        </div>
+
         {/* Quick Actions */}
         <Card className="p-6 shadow-card">
           <h3 className="text-lg font-semibold text-foreground mb-4">Quick Actions</h3>
@@ -306,11 +312,12 @@ const Dashboard = () => {
               </Link>
             </Button>
             <Button asChild variant="outline" className="justify-start">
-              <Link to="/education">
-                <Activity className="w-4 h-4 mr-2" />
-                Education Hub
+              <Link to="/recipe-analyzer">
+                <UtensilsCrossed className="w-4 h-4 mr-2" />
+                Recipe Analyzer
               </Link>
             </Button>
+
           </div>
         </Card>
       </div>

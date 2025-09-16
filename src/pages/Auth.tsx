@@ -34,7 +34,7 @@ const Auth = () => {
           <div className="flex items-center justify-center gap-2 mb-4">
             <Badge variant="outline" className="bg-primary/10">
               <Lock className="w-3 h-3 mr-1" />
-              Cognito MFA
+              Secure Access
             </Badge>
             <Badge variant="outline" className="bg-accent/10">
               Role Groups
@@ -157,9 +157,9 @@ const Auth = () => {
               <div>
                 <h4 className="font-semibold text-foreground mb-2">Security Notice</h4>
                 <p className="text-sm text-muted-foreground">
-                  This is a demonstration environment. In production, this system would integrate with 
-                  AWS Cognito for multi-factor authentication, role-based access control, and secure 
-                  session management.
+                  This is a demonstration environment. In production, this system would use 
+                  secure authentication with multi-factor authentication, role-based access control, 
+                  and encrypted session management.
                 </p>
               </div>
             </div>

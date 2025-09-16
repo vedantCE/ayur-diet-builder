@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Download, Coffee, Sun, Moon, UtensilsCrossed, Calendar, User, Leaf } from "lucide-react";
+import NutrientAnalysis from "@/components/NutrientAnalysis";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
@@ -22,10 +23,10 @@ const DietChart = () => {
   const { toast } = useToast();
 
   const mealTimes = [
-    { id: "breakfast", name: "Breakfast", icon: Coffee, time: "7:00 - 9:00 AM", color: "bg-gradient-to-r from-orange-100 to-yellow-100" },
-    { id: "lunch", name: "Lunch", icon: Sun, time: "12:00 - 2:00 PM", color: "bg-gradient-to-r from-green-100 to-emerald-100" },
-    { id: "dinner", name: "Dinner", icon: Moon, time: "7:00 - 9:00 PM", color: "bg-gradient-to-r from-purple-100 to-blue-100" },
-    { id: "snacks", name: "Snacks", icon: UtensilsCrossed, time: "4:00 - 6:00 PM", color: "bg-gradient-to-r from-pink-100 to-rose-100" },
+    { id: "breakfast", name: "प्रातःकाल (Breakfast)", icon: Coffee, time: "7:00 - 9:00 AM (Kapha Time)", color: "bg-gradient-to-r from-orange-100 to-yellow-100" },
+    { id: "lunch", name: "मध्याह्न (Lunch)", icon: Sun, time: "12:00 - 2:00 PM (Pitta Time)", color: "bg-gradient-to-r from-green-100 to-emerald-100" },
+    { id: "dinner", name: "सायंकाल (Dinner)", icon: Moon, time: "7:00 - 9:00 PM (Kapha Time)", color: "bg-gradient-to-r from-purple-100 to-blue-100" },
+    { id: "snacks", name: "नाश्ता (Snacks)", icon: UtensilsCrossed, time: "4:00 - 6:00 PM (Vata Time)", color: "bg-gradient-to-r from-pink-100 to-rose-100" },
   ];
 
   // Sample diet plan if none exists
@@ -105,10 +106,10 @@ const DietChart = () => {
             <Leaf className="w-8 h-8 text-primary-foreground" />
           </div>
           <h1 className="text-4xl font-bold text-foreground mb-4 print:text-2xl">
-            Personalized Ayurvedic Diet Chart
+            आहार चार्ट (Ahara Chart)
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto print:text-sm">
-            A customized nutrition plan based on Ayurvedic principles and individual constitution
+            Personalized Ayurvedic Diet Chart - Customized nutrition plan based on your प्रकृति (Prakriti) constitution
           </p>
         </div>
 
@@ -212,6 +213,9 @@ const DietChart = () => {
             );
           })}
         </div>
+
+        {/* Nutrient Analysis */}
+        <NutrientAnalysis foodItems={dietPlan} patientProfile={patientProfile} />
 
         {/* Ayurvedic Guidelines */}
         <Card className="p-6 mb-8 shadow-card bg-muted/30 print:shadow-none print:border">
